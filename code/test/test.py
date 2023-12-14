@@ -18,3 +18,22 @@ def main(service):
 
 if __name__ == "__main__":
     main()
+
+
+def log_confusion_matrix(cm, labels):
+    # log confusion matrix as object
+    cm_json =   {
+       'schema_type': 'confusion_matrix',
+       'schema_version': 'v1',
+       'data': {
+           'class_labels': labels,
+           'matrix': cm.tolist()
+       }
+    }
+    run.log_confusion_matrix('confusion_matrix', cm_json)
+    
+    # log confusion matrix as image
+    log_confusion_matrix_image(cm, labels, normalize=False, log_name='confusion_matrix_unnormalized', title='Confusion matrix')
+    
+    # log normalized confusion matrix as image
+    log_confusion_matrix_image(cm, labels, normalize=True, log_name='confusion_matrix_normalized', title='Normalized confusion matrix')
